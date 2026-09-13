@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Japan trip</title>
+<style>
+  html,body{height:100%}
+  body{font-family:-apple-system,BlinkMacSystemFont,Helvetica,Arial,sans-serif;
+       background:#0d2b5e;color:#fff;display:flex;align-items:center;
+       justify-content:center;margin:0}
+  iframe{position:fixed;inset:0;width:100%;height:100%;border:0;background:#fff}
+  form{text-align:center;width:min(90vw,320px)}
+  h1{font-size:20px;font-weight:600;margin:0 0 4px}
+  p{font-size:14px;opacity:.7;margin:0 0 22px}
+  input{width:100%;box-sizing:border-box;padding:11px 13px;font-size:16px;
+        border:1px solid rgba(255,255,255,.3);border-radius:7px;
+        background:rgba(255,255,255,.1);color:#fff}
+  input::placeholder{color:rgba(255,255,255,.5)}
+  button{width:100%;margin-top:10px;padding:11px;font-size:15px;font-weight:600;
+         border:0;border-radius:7px;background:#fff;color:#0d2b5e;cursor:pointer}
+  button[disabled]{opacity:.6;cursor:default}
+  .err{color:#ffb4b4;font-size:14px;min-height:20px;margin-top:12px}
+</style>
+</head>
+<body>
+<form id="gate">
+  <h1>Japan trip</h1>
+  <p>Enter the password to open the day plan.</p>
+  <input id="pw" type="password" placeholder="Password" autocomplete="current-password" autofocus>
+  <button id="go" type="submit">Open</button>
+  <div class="err" id="err"></div>
+</form>
+<script>
+const SALT = "+cRjYJovYX9i1Fif9X8gaw==";
+const IV   = "QJrazzkN7/DaEfq1";
+const DATA = "cGvHyNBym9agNVtzoGfVhaMe2n/KMMdbbvXOCQYT38aV3FqldALTwBh6MEt0Yg6f5aJujeZb9UjAYWmcFFrX2PkZPW9VyWtu/ypNEHw79Vh6iuI+sKrnPqfdHOVGdNBQThIOr9vyDkRk31voukTGQFoYY+axydV+S2OHpXwtu2+TdgEAF6wTmgIMquKVylE06X2VpxzwgMjkOvpQMCpobjFbUV+/SKk2nGIRHjF83o8x1kvcSSFfZPmagocF5QzvXDskk6kKl4HT6C1csD+OWhz+IAv8lT9nocO30iQ/hm5JNuDMJ5MLOSc5fMYhiPFJC4m0wNYI+WfB33mBaKkx509C5bw6F1+JSe7ezWk309SeKARnG8acQ8Mf2ZAa4gTmeD0NTrHNmMP2wbCi/EIzVBxhOPVqkNGVl7Z6YykualkyON41eWEyxYyKLHpXYWzEjRje0t0mp74SB/0hiyqgMeEC8ozyd6DEniFvVHLeB+x1duMbSVqlopHMNfvPM/71TC7TTTnd+M+ViVGj4n0kd2WA8qCvJ23MRPWokHAZRrulsZO8jgTOQpT4an91gZiAINlh0czMCerxXnzzjy2GKJFgHMO3bXjkgVxmCJvbks0nHEun2S7Nw+pev2UpPBkj36Q/g7QapjwQLxY5QP9+yjQFzHN5v4fIDgAe/eirZzZ6+/8lARF+3pFTXtcGIDPJem5WOx6F0+jClqJ/v9FfO3Tw8BCp6y1vSXtTC2HLlUtPMmvnIJ/cTDe5Y1UxNhbhWVYNvke000p0l87ny7rCiQ5j1YP56+CGauf4GbBZCKK+FoVGCLlNno6qN0PNCPKtI4iRjO24Derj6KPFCROL1xnp5W9QfEfwG1W9GWVROVqu6gL2xVBQGy2zGxjtpT8uiqB/Owvgx5orSKbCzA2ZrwFvGvVCMGi+7fqErV3l/mNP+3QxraQglmshATDn5fvHUGZBBJHCXxtrzRsWhnhKtO7Ui0lKMhieCEIX6G1ZeWtEy77dlBLVnMjI3MkDLM5l4zcoiAf0YaGNDHljMMxuKGe/nx4kYLQ5KdyLmrtZkqGWjsrsWqFMgOMl4CrGHAnhG95Gz3MpvU5XnUdUopI62QDgW7WQCPHrKYSggvo7Aoa5p9CI+RUE2vLLHuoXOX4FxdIi+HFb6G5ga4138WYPIYF74VvfIvMUVmr7vKAwtP146D7gDvimAeFgQxbcVkHgEjq0tdiXUTaW1bVdbyruQKXrPZYPkq1K8oeeQ2DYouiGnZ+U10EG7NUeFwBRLWYepnmtIpFvZdEZFZVw2Jot6m70Sj3bT9mukVzp0V8euuNToGZ+ZJshOBOb+lEQUGyA791LACUprsdya23moGMZqniKtSH0kJyHxKWTPEHuD61neYG5DHFAu8b2r5yD24pgctDrQScroER6NRW73bzFZwZgZWWx24Jf25M6UZstKbU7zF0nyQaP8jdfLNLKa8KeEca4nYnwsEnt0h6c9Pp7rZnav6QwozD+fioABhl5E4/Dow8/IJ+JyJxFYc9gMFI52RRpBjZ4Q2oTV6ubVUgn3QxVIDzN";
+const ITER = 600000;
+const STORE = "japan-trip-password";   // sessionStorage: this tab only, gone when it closes
+
+const bytes = (s) => Uint8Array.from(atob(s), (c) => c.charCodeAt(0));
+const err = document.getElementById("err");
+const go = document.getElementById("go");
+const busy = (on) => { go.disabled = on; go.textContent = on ? "Unlocking\u2026" : "Open"; };
+
+async function unlock(pw) {
+  const baseKey = await crypto.subtle.importKey(
+    "raw", new TextEncoder().encode(pw), "PBKDF2", false, ["deriveKey"]);
+  const key = await crypto.subtle.deriveKey(
+    { name: "PBKDF2", salt: bytes(SALT), iterations: ITER, hash: "SHA-256" },
+    baseKey, { name: "AES-GCM", length: 256 }, false, ["decrypt"]);
+  const plain = await crypto.subtle.decrypt({ name: "AES-GCM", iv: bytes(IV) }, key, bytes(DATA));
+  try { sessionStorage.setItem(STORE, pw); } catch {}
+  // A fresh iframe document gives the page a normal load lifecycle (the map waits for 'load').
+  const frame = document.createElement("iframe");
+  frame.setAttribute("title", document.title);
+  frame.srcdoc = new TextDecoder().decode(plain);
+  document.body.replaceChildren(frame);
+}
+
+document.getElementById("gate").addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const pw = document.getElementById("pw").value;
+  if (!pw) return;
+  busy(true);
+  err.textContent = "";
+  try { await unlock(pw); } catch { err.textContent = "Wrong password."; busy(false); }
+});
+
+let saved = null;
+try { saved = sessionStorage.getItem(STORE); } catch {}
+if (saved) {
+  busy(true);
+  unlock(saved).catch(() => { try { sessionStorage.removeItem(STORE); } catch {} busy(false); });
+}
+</script>
+</body>
+</html>
